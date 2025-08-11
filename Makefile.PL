@@ -130,8 +130,12 @@ sub parse_constants {
         close H_IN;
         open (H, "<", $filename) or die ("Cannot open $filename: ".$!);
         while(<H>) {
-            if (/^#define (CURL[A-Za-z0-9_]*)/) {
-                push @syms, $1;
+            if (/^#define\s+(CURL[A-Za-z0-9_]+)(\([^)]*\))?\s*(.*)/) {
+                my ($name, $params, $rest) = ($1, $2, $3);
+                next if $name =~ /^CURL_HAS_/;       # skip conditional feature macros
+                next if defined $params;             # skip parameterised macros
+                next if $rest eq '';
+                push @syms, $name;
             }
         }
         close H;

@@ -70,11 +70,7 @@ typedef struct {
 
 
 typedef struct {
-#ifdef __CURL_MULTI_H
-    struct CURLM *curlm;
-#else
-    struct void *curlm;
-#endif
+    CURLM *curlm;
 } perl_curl_multi;
 
 typedef struct {
